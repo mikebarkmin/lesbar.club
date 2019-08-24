@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Lesbar.club</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='index.css') }}"
+    />
+  </head>
+  <body>
+    <img
+      id="logo"
+      alt="lesbar.club"
+      src="{{ url_for('static', filename='images/logo.svg') }}"
+    />
+    <div class="card" id="text-card">
+      <div class="header">
+        <h2>Text</h2>
+        <button id="check" class="secondary">
+          Überprüfen
+          <div class="progress"></div>
+        </button>
+      </div>
+      <div class="content">
+        <textarea
+          id="text-input"
+          placeholder="Gib den zu prüfenden Text hier ein..."
+        ></textarea>
+      </div>
+      <div class="footer">
+        <div id="results">
+          <div id="text">
+            <div id="chars">
+              <h3>Zeichen</h3>
+              <div class="number"></div>
+            </div>
+            <div id="letters">
+              <h3>Buchstaben</h3>
+              <div class="number"></div>
+            </div>
+            <div id="syllables">
+              <h3>Silben</h3>
+              <div class="number"></div>
+            </div>
+            <div id="sentences">
+              <h3>Sätze</h3>
+              <div class="number"></div>
+            </div>
+            <div id="words">
+              <h3>Wörter</h3>
+              <div class="number"></div>
+            </div>
+          </div>
+          <div id="lesbar">
+            <div class="index" id="fre">
+              <h3>Flesch-Reading-Ease-De</h3>
+              <div class="result"></div>
+            </div>
+            <div class="index" id="wstf">
+              <h3>Wienersachtext-Formel-4</h3>
+              <div class="result"></div>
+            </div>
+            <div class="index" id="lix">
+              <h3>Lesbarkeitsindex</h3>
+              <div class="result"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script
+    type="text/javascript"
+    src="{{ url_for('static', filename='index.js') }}"
+  ></script>
+</html>
