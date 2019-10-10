@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  lesbar:
+    build: server
+    command: python main.py
+    environment:
+      FLASK_ENV: "development"
+    ports:
+      - 8000:8000
+    volumes:
+      - ./server:/app
+
