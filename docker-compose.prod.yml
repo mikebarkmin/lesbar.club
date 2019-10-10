@@ -1,0 +1,7 @@
+version: '3'
+
+services:
+  lesbar:
+    image: mikebarkmin/lesbar.club
+    ports:
+      - 80:80
