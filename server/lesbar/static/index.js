@@ -8,9 +8,51 @@
   let textInput = document.getElementById('text-input');
   let results = document.getElementById('results');
 
+  let trans_dict = {'check': {de: 'Überprüfen',
+                              en: 'Check'},
+                    'text-input': {de: 'Gib den zu prüfenden Text hier ein...',
+                                   en: 'Enter the text to be checked here...'},
+                    'chars': {de: 'Zeichen',
+                              en: 'Characters'},
+                    'letters': {de: 'Buchstaben',
+                                en: 'Letters'},
+                    'syllables': {de: 'Silben',
+                                  en: 'Syllables'},
+                    'sentences': {de: 'Sätze',
+                                  en: 'Sentences'},
+                    'words': {de: 'Wörter',
+                              en: 'Words'},
+                    };
+
+  function translate(){
+      if (getLanguage().startsWith('en')){
+          for(var key in trans_dict){
+                if(key === 'check'){
+                    document.getElementById('check').innerText = trans_dict[key].en;
+                }else{
+                    if(key === 'text-input'){
+                        document.getElementById('text-input').placeholder = trans_dict[key].en;
+                    }
+                    else{
+                        var tmp_el = document.getElementById(key).childNodes[1];
+                        tmp_el.innerHTML = trans_dict[key].en;
+                    }
+                }
+            }
+          }
+  }
+
+  translate();
+
+  function getLanguage(){
+    var userLang = navigator.language || navigator.userLanguage;
+    userLang = userLang.replace('-', '_');
+    return userLang;
+  }
+
   function checkText() {
     let text = textInput.value;
-    let data = { text, language: 'de_DE' };
+    let data = { text, language: getLanguage()};
 
     checkBtn.classList.add('active');
     results.classList.remove('show');
