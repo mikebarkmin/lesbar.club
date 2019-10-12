@@ -5,54 +5,58 @@
     location.hostname +
     (location.port ? ':' + location.port : '');
   let checkBtn = document.getElementById('check');
+  let languageSelect = document.getElementById('language-select');
   let textInput = document.getElementById('text-input');
   let results = document.getElementById('results');
+  let languageButtons = document.getElementsByClassName('language');
+  let transLanguage = getBrowserLanguage();
+  let textLanguage = 'de_DE';
 
-  let trans_dict = {'check': {de: 'Überprüfen',
-                              en: 'Check'},
-                    'text-input': {de: 'Gib den zu prüfenden Text hier ein...',
-                                   en: 'Enter the text to be checked here...'},
-                    'chars': {de: 'Zeichen',
-                              en: 'Characters'},
-                    'letters': {de: 'Buchstaben',
-                                en: 'Letters'},
-                    'syllables': {de: 'Silben',
-                                  en: 'Syllables'},
-                    'sentences': {de: 'Sätze',
-                                  en: 'Sentences'},
-                    'words': {de: 'Wörter',
-                              en: 'Words'},
-                    };
+  let trans_dict = {
+    check: { de: 'Überprüfen', en: 'Check' },
+    'text-input': {
+      de: 'Gib den zu prüfenden Text hier ein...',
+      en: 'Enter the text to be checked here...'
+    },
+    chars: { de: 'Zeichen', en: 'Characters' },
+    letters: { de: 'Buchstaben', en: 'Letters' },
+    syllables: { de: 'Silben', en: 'Syllables' },
+    sentences: { de: 'Sätze', en: 'Sentences' },
+    words: { de: 'Wörter', en: 'Words' }
+  };
 
-  function translate(){
-      if (getLanguage().startsWith('en')){
-          for(var key in trans_dict){
-                if(key === 'check'){
-                    document.getElementById('check').innerText = trans_dict[key].en;
-                }else{
-                    if(key === 'text-input'){
-                        document.getElementById('text-input').placeholder = trans_dict[key].en;
-                    }
-                    else{
-                        var tmp_el = document.getElementById(key).childNodes[1];
-                        tmp_el.innerHTML = trans_dict[key].en;
-                    }
-                }
-            }
+  function translate() {
+    if (transLanguage.startsWith('en')) {
+      for (var key in trans_dict) {
+        if (key === 'check') {
+          document.getElementById('check').innerText = trans_dict[key].en;
+        } else {
+          if (key === 'text-input') {
+            document.getElementById('text-input').placeholder =
+              trans_dict[key].en;
+          } else {
+            var tmp_el = document.getElementById(key).childNodes[1];
+            tmp_el.innerHTML = trans_dict[key].en;
           }
+        }
+      }
+    }
   }
 
   translate();
 
-  function getLanguage(){
+  function getBrowserLanguage() {
     var userLang = navigator.language || navigator.userLanguage;
     userLang = userLang.replace('-', '_');
+    if (!userLang in ['en_GB', 'en_US', 'de_De']) {
+      userLang = 'en_GB';
+    }
     return userLang;
   }
 
   function checkText() {
     let text = textInput.value;
-    let data = { text, language: getLanguage()};
+    let data = { text, language: textLanguage };
 
     checkBtn.classList.add('active');
     results.classList.remove('show');
@@ -103,6 +107,11 @@
     lix.getElementsByClassName('result')[0].innerHTML = round(lesbar.lix);
   }
 
+  function setLanguage(language) {
+    textLanguage = language;
+    languageSelect.innerText = supportedLanguages[language]['label'];
+  }
+
   function round(number, precision = 2) {
     return (
       Math.round(number * Math.pow(10, precision)) / Math.pow(10, precision)
@@ -110,4 +119,9 @@
   }
 
   checkBtn.addEventListener('click', checkText);
+  Array.from(languageButtons).forEach(function(button) {
+    button.addEventListener('click', function(e) {
+      setLanguage(e.target.dataset.locale);
+    });
+  });
 })();

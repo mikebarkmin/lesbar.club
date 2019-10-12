@@ -8,16 +8,26 @@ from lesbar.formulas import (
     lix,
 )
 
+supported_languages = {
+    "de_DE": {"label": "Deutsch"},
+    "en_GB": {"label": "English (GB)"},
+    "en_US": {"label": "English (US)"},
+}
+
+default_language = "de_DE"
+
 
 def create_app():
 
     app = Flask(__name__)
 
-    supported_languages = ["en_GB", "en_US", "de_DE"]
-
     @app.route("/", methods=["GET"])
     def index():
-        return render_template("index.html")
+        return render_template(
+            "index.html",
+            supported_languages=supported_languages,
+            default_language=default_language,
+        )
 
     @app.route("/api/v1/lesbar", methods=["POST"])
     def lesbar():
@@ -26,7 +36,7 @@ def create_app():
         if not json or not json.get("text"):
             return jsonify({"message": "Missing text"}), 400
 
-        language = json.get("language", "en_GB")
+        language = json.get("language", default_language)
         if language not in supported_languages:
             return (
                 jsonify(

@@ -96,7 +96,21 @@
     <div class="card" id="text-card">
       <div class="header">
         <h2>Text</h2>
-        <button id="check" class="secondary">
+        <div class="dropdown">
+          <button id="language-select" class="primary">
+            {{ supported_languages[default_language].label }}
+          </button>
+          <div class="dropdown-content">
+            <div id="languges">
+              {% for key, value in supported_languages.items() %}
+              <button data-locale="{{ key }}" class="language">
+                {{ value['label'] }}
+              </button>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        <button id="check" class="secondary margin-left">
           Überprüfen
           <div class="progress"></div>
         </button>
@@ -153,6 +167,9 @@
       <a href="https://github.com/mikebarkmin/lesbar.club">GitHub Repository</a>
     </footer>
   </body>
+  <script>
+    let supportedLanguages = {{ supported_languages|tojson }};
+  </script>
   <script
     type="text/javascript"
     src="{{ url_for('static', filename='index.js') }}"
