@@ -64,6 +64,7 @@ class Text:
     @property
     def detected_lang(self) -> str:
         print('CONTENT', self.content)
+        print(detect(self.content))
         return detect(self.content)
 
     def to_dict(self):
@@ -74,7 +75,7 @@ class Text:
             "num_letters": self.num_letters,
             "num_character": self.num_characters,
             "language": self.language,
-            # "detected_lang": self.detected_lang
+            "detected_lang": self.detected_lang
         }
 
 
