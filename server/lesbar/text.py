@@ -2,6 +2,7 @@ from typing import List
 import pyphen
 import nltk
 from nltk.tokenize import word_tokenize, sent_tokenize
+from langdetect import detect
 
 nltk.data.path.append("/srv/nltk_data")
 
@@ -60,6 +61,11 @@ class Text:
     def num_letters(self) -> int:
         return len(self.letters)
 
+    @property
+    def detected_lang(self) -> str:
+        print('CONTENT', self.content)
+        return detect(self.content)
+
     def to_dict(self):
         return {
             "num_words": self.num_words,
@@ -68,6 +74,7 @@ class Text:
             "num_letters": self.num_letters,
             "num_character": self.num_characters,
             "language": self.language,
+            # "detected_lang": self.detected_lang
         }
 
 
@@ -133,3 +140,4 @@ class Letter:
     @classmethod
     def tokenize(cls, content: str) -> List["Letter"]:
         return [Letter(letter_content) for letter_content in content]
+        

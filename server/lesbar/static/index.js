@@ -12,6 +12,7 @@
   let transLanguage = getBrowserLanguage();
   let textLanguage = 'de_DE';
 
+
   let trans_dict = {
     check: { de: 'Überprüfen', en: 'Check' },
     'text-input': {
@@ -23,11 +24,15 @@
     syllables: { de: 'Silben', en: 'Syllables' },
     sentences: { de: 'Sätze', en: 'Sentences' },
     words: { de: 'Wörter', en: 'Words' }
+    // 'detected-lang': { de: 'Detected Lang', en: 'Detected Lang'}
   };
 
   function translate() {
     if (transLanguage.startsWith('en')) {
+      debugger;
       for (var key in trans_dict) {
+        console.log('KEY', key)
+        console.log('DICT', trans_dict)
         if (key === 'check') {
           document.getElementById('check').innerText = trans_dict[key].en;
         } else {
@@ -35,6 +40,8 @@
             document.getElementById('text-input').placeholder =
               trans_dict[key].en;
           } else {
+            console.log('KEY', key)
+            console.log('DOC', document.getElementById(key))
             var tmp_el = document.getElementById(key).childNodes[1];
             tmp_el.innerHTML = trans_dict[key].en;
           }
@@ -83,12 +90,14 @@
   }
 
   function displayResults({ text, lesbar }) {
+    console.log('TEX', text.detected_lang)
     results.classList.add('show');
     let letters = document.getElementById('letters');
     let chars = document.getElementById('chars');
     let syllables = document.getElementById('syllables');
     let sentences = document.getElementById('sentences');
     let words = document.getElementById('words');
+    // let lang = document.getElementById('detected-lang');
 
     letters.getElementsByClassName('number')[0].innerHTML = text.num_letters;
     chars.getElementsByClassName('number')[0].innerHTML = text.num_character;
@@ -97,6 +106,7 @@
     sentences.getElementsByClassName('number')[0].innerHTML =
       text.num_sentences;
     words.getElementsByClassName('number')[0].innerHTML = text.num_words;
+    // lang.getElementsByClassName('result')[0].innerHTML = text.detected_lang;
 
     let fre = document.getElementById('fre');
     let wstf = document.getElementById('wstf');
