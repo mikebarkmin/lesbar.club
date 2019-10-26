@@ -15,7 +15,8 @@ class Text:
     def __init__(self, content: str, lang="en_GB"):
         self.language: str = lang
         self.content: str = content
-        self.sentences: List["Sentence"] = Sentence.tokenize(content, lang=lang)
+        self.sentences: List["Sentence"] = Sentence.tokenize(
+            content, lang=lang)
 
     @property
     def num_characters(self) -> int:
@@ -63,9 +64,11 @@ class Text:
 
     @property
     def detected_lang(self) -> str:
-        print('CONTENT', self.content)
-        print(detect(self.content))
         return detect(self.content)
+
+    @property
+    def language_match(self) -> bool:
+        return self.detected_lang[0:2] == self.language
 
     def to_dict(self):
         return {
@@ -75,7 +78,8 @@ class Text:
             "num_letters": self.num_letters,
             "num_character": self.num_characters,
             "language": self.language,
-            "detected_lang": self.detected_lang
+            "detected_lang": self.detected_lang,
+            "language_match": self.language_match
         }
 
 
@@ -141,4 +145,3 @@ class Letter:
     @classmethod
     def tokenize(cls, content: str) -> List["Letter"]:
         return [Letter(letter_content) for letter_content in content]
-        
