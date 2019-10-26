@@ -1,5 +1,4 @@
 from flask import Flask, request, jsonify, render_template
-from langdetect import detect
 import re
 from lesbar.text import Text
 from lesbar.formulas import (
