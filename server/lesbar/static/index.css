@@ -47,6 +47,17 @@ footer {
   color: var(--text-dark);
 }
 
+#lang-notify {
+  display: none;
+  width: 100%;
+  /* display: flex; */
+  align-items: center;
+  padding: 16px;
+  font-size: 14px;
+  background-color: var(--primary);
+  color: white;
+}
+
 #logo {
   width: 280px;
   margin: 32px;
@@ -261,6 +272,13 @@ button.secondary:active:enabled {
   color: var(--text-dark);
 }
 
+#results #text #detected-lang .detected {
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--text-dark);
+}
+
 #results #lesbar {
   margin-top: 10px;
   display: grid;
@@ -278,7 +296,7 @@ button.secondary:active:enabled {
 @media only screen and (min-width: 600px) {
   #results #text {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
     grid-gap: 10px;
   }
   #results #lesbar {
