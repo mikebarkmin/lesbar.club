@@ -1,11 +1,10 @@
+import os
 import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
 from lesbar import create_app
 
-sentry_sdk.init(
-    dsn="https://b2d8172ecb894f61a9a322788591c172@sentry.io/1540715",
-    integrations=[FlaskIntegration()],
-)
+if os.getenv("FLASK_ENV") == "producation" and os.getenv("SENTRY_DSN"):
+    sentry_sdk.init(dsn=os.getenv("SENTRY_DSN"), integrations=[FlaskIntegration()])
 
 app = create_app()
 

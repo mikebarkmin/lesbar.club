@@ -15,8 +15,7 @@ class Text:
     def __init__(self, content: str, lang="en_GB"):
         self.language: str = lang
         self.content: str = content
-        self.sentences: List["Sentence"] = Sentence.tokenize(
-            content, lang=lang)
+        self.sentences: List["Sentence"] = Sentence.tokenize(content, lang=lang)
 
     @property
     def num_characters(self) -> int:
@@ -79,7 +78,7 @@ class Text:
             "num_character": self.num_characters,
             "language": self.language,
             "detected_lang": self.detected_lang,
-            "language_match": self.language_match
+            "language_match": self.language_match,
         }
 
 
