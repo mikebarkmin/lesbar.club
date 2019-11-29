@@ -1,5 +1,8 @@
 from typing import Dict
 from lesbar.text import Text
+import os
+
+script_dir = os.path.dirname(__file__)
 
 
 def wiener_sachtext_formel(text: Text) -> Dict[str, float]:
@@ -48,17 +51,20 @@ def flesh_reading_ease(text: Text) -> Dict[str, float]:
     fkgl = (0.39 * asl) + (11.8 * asw) - 15.59
 
     # number of one-syllable words per 100 words
-    nosw = 0.0
-    for word in text.words:
-        if len(word.syllables) == 1:
-            nosw += 1
+    # nosw = 0.0
+    # for word in text.words:
+    #     if len(word.syllables) == 1:
+    #         nosw += 1
 
-    nosw = nosw / 100.0
+    # nosw = nosw / 100.0
 
-    # new reading ease score
-    nres = 1.5999 * nosw - 1.015 * asl - 31.517
+    # # new reading ease score
+    # nres = 1.5999 * nosw - 1.015 * asl - 31.517
 
-    return {"fre": fre, "fre_de": fre_de, "fkgl": fkgl}
+    if text.language == "de_DE":
+        return {"fre_de": fre_de}
+
+    return {"fre": fre, "fkgl": fkgl}
 
 
 def gunning_fog_index(text: Text) -> Dict[str, float]:
@@ -94,16 +100,13 @@ def lix(text: Text) -> Dict[str, float]:
     return {"lix": lix}
 
 
-import os
-
-script_dir = os.path.dirname(__file__)
+# load easy words once
+# source: http://countwordsworth.com/download/DaleChallEasyWordList.txt
 dale_chall_file = open(os.path.join(script_dir, "res/DaleChallEasyWordList.txt"), "r")
 dale_chall_easy_words = dale_chall_file.readlines()
 
 
 def dale_chall(text: Text) -> Dict[str, float]:
-
-    # source: http://countwordsworth.com/download/DaleChallEasyWordList.txt
     easy_words = dale_chall_easy_words
 
     # average sentence length

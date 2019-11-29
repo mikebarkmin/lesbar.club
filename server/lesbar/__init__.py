@@ -12,9 +12,8 @@ from lesbar.formulas import (
 )
 
 supported_languages = {
-    "de_DE": {"label": "Deutsch"},
-    "en_GB": {"label": "English (GB)"},
-    "en_US": {"label": "English (US)"},
+    "de_DE": {"formulas": [wiener_sachtext_formel, flesh_reading_ease, lix]},
+    "en_GB": {"formulas": [flesh_reading_ease, gunning_fog_index, dale_chall]},
 }
 
 default_language = "de_DE"
@@ -50,19 +49,11 @@ def create_app():
 
         res_text = json.get("text")
         text = Text(res_text, lang=language)
+        lesbar = {}
+        for forumla in supported_languages[language]["formulas"]:
+            lesbar = {**lesbar, **forumla(text)}
 
-        res_json = {
-            "results": {
-                "lesbar": {
-                    **wiener_sachtext_formel(text),
-                    **flesh_reading_ease(text),
-                    **gunning_fog_index(text),
-                    **dale_chall(text),
-                    **lix(text),
-                },
-                "text": text.to_dict(),
-            }
-        }
+        res_json = {"results": {"lesbar": lesbar, "text": text.to_dict()}}
 
         if text.detected_lang != language[0:2]:
             alt_language = [
@@ -70,18 +61,12 @@ def create_app():
             ]
             if alt_language:
                 alt_language = alt_language[0]
-                alt_text = Text(res_text, alt_language)
+                alt_text = Text(res_text, lang=alt_language)
+                lesbar = {}
+                for forumla in supported_languages[alt_language]["formulas"]:
+                    lesbar = {**lesbar, **forumla(alt_text)}
 
-                res_json["alt_results"] = {
-                    "lesbar": {
-                        **wiener_sachtext_formel(alt_text),
-                        **flesh_reading_ease(alt_text),
-                        **gunning_fog_index(alt_text),
-                        **dale_chall(alt_text),
-                        **lix(alt_text),
-                    },
-                    "text": alt_text.to_dict(),
-                }
+                res_json["alt_results"] = {"lesbar": lesbar, "text": alt_text.to_dict()}
 
         return jsonify(res_json)
 
