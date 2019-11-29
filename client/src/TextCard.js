@@ -11,7 +11,9 @@ import config from './config';
 function TextCard() {
   const [languages, setLanguages] = useState([]);
   const [language, setLanguage] = useState();
-  const [text, setText] = useState('');
+  const [text, setText] = useState(
+    'Ein Lesbarkeitsindex ist eine Formel oder ein Verfahren, mit dem versucht wird, die Lesbarkeit eines Textes formal durch mathematische Formeln zu berechnen. Er erfüllt die Funktion einer mathematischen Metrik. Drücke Überprüfen, um den Text zu analysieren.'
+  );
   const [results, setResults] = useState(null);
   const [altResults, setAltResults] = useState(null);
   const [showResult, setShowResult] = useState(false);

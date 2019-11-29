@@ -12,10 +12,13 @@ const Sentence = styled.div`
   background: #fff1e6;
   border-radius: 8px;
   margin-bottom: 16px;
+  border: ${props => (props.difficult ? '2px solid red' : null)};
   padding: 8px;
 `;
 
 const Word = styled.span`
+  color: ${props => (props.difficult ? '#0b9fd8' : props.theme.text.dark)};
+  font-weight: ${props => (props.difficult ? 'bold' : null)};
   &:after {
     content: ' ';
   }
@@ -28,6 +31,7 @@ const Word = styled.span`
 const Syllable = styled.span`
   font-size: 1.2rem;
   font-family: serif;
+  line-height: 1.7em;
 
   &:after {
     content: '-';
@@ -38,16 +42,46 @@ const Syllable = styled.span`
   }
 `;
 
+function sentenceIsDifficult(words) {
+  let difficultWords = 0;
+  words.forEach(w => {
+    if (wordIsDifficult(w.syllables)) {
+      difficultWords++;
+    }
+  });
+
+  return difficultWords >= 5;
+}
+
+function wordIsDifficult(syllables) {
+  return syllables.length >= 3;
+}
+
 function TextMarkup({ onClick, sentences }) {
-  console.log(sentences);
   return (
     <TextMarkupContainer onClick={onClick}>
-      {sentences.map(({ words }) => (
-        <Sentence>
-          {words.map(({ syllables }) => (
-            <Word>
-              {syllables.map(({ content }) => (
-                <Syllable>{content}</Syllable>
+      {sentences.map(({ words }, i) => (
+        <Sentence
+          key={i}
+          title={
+            sentenceIsDifficult(words)
+              ? 'Schwieriger Satz. 5 oder mehr schwierige Wörter.'
+              : null
+          }
+          difficult={sentenceIsDifficult(words)}
+        >
+          {words.map(({ syllables }, k) => (
+            <Word
+              key={i + ',' + k}
+              title={
+                wordIsDifficult(syllables)
+                  ? 'Schwieriges Wort. 3 oder mehr Silben.'
+                  : null
+              }
+              difficult={wordIsDifficult(syllables)}
+            >
+              {syllables.map(({ content }, p) => (
+                <Syllable key={i + ',' + k + ',' + p}>{content}</Syllable>
               ))}
             </Word>
           ))}

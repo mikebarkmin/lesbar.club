@@ -10,6 +10,7 @@ const TextArea = styled.textarea`
   min-height: 400px;
   overflow: visible;
   padding: 16px;
+  line-height: 1.7em;
 `;
 
 export default TextArea;
