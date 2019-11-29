@@ -4,6 +4,8 @@ import styled from 'styled-components';
 
 const TextMarkupContainer = styled.div`
   padding: 16px;
+  height: 400px;
+  overflow-y: auto;
 `;
 
 const Sentence = styled.div`

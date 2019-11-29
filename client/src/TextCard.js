@@ -15,6 +15,7 @@ function TextCard() {
   const [results, setResults] = useState(null);
   const [altResults, setAltResults] = useState(null);
   const [showResult, setShowResult] = useState(false);
+  const [showLimit, setShowLimit] = useState(false);
 
   useEffect(() => {
     fetch(config.apiURL + '/api/v1/languages', {
@@ -31,6 +32,7 @@ function TextCard() {
   }, []);
 
   function testText() {
+    setShowLimit(false);
     fetch(config.apiURL + '/api/v1/lesbar', {
       method: 'POST',
       headers: {
@@ -58,7 +60,12 @@ function TextCard() {
   }
 
   function handleTextChange(e) {
-    setText(e.target.value);
+    if (e.target.value.length <= 20000) {
+      setShowLimit(false);
+    } else {
+      setShowLimit(true);
+    }
+    setText(e.target.value.substr(0, 20000));
     setShowResult(false);
   }
 
@@ -66,6 +73,10 @@ function TextCard() {
     setLanguage(altResults.text.language);
     setResults(altResults);
     setAltResults(null);
+  }
+
+  function handleShowResult() {
+    setShowResult(true);
   }
 
   return (
@@ -96,8 +107,21 @@ function TextCard() {
         )}
       </CardContent>
       <CardFooter>
-        {altResults && <TextNotify onClick={handleUseAlt} />}
-        {results && <TextResult {...results} />}
+        {showLimit && (
+          <div style={{ padding: 16, textAlign: 'center' }}>
+            Es dürfen nur 20.000 Zeichen verwendet werden. Der Rest wurde
+            abgeschnitten.
+          </div>
+        )}
+        {showResult && altResults && <TextNotify onClick={handleUseAlt} />}
+        {showResult && results && <TextResult {...results} />}
+        {!showResult && results && (
+          <div style={{ padding: 16, textAlign: 'center' }}>
+            <ButtonSecondary onClick={handleShowResult}>
+              Zeige letzte Analyse
+            </ButtonSecondary>
+          </div>
+        )}
       </CardFooter>
     </Card>
   );
