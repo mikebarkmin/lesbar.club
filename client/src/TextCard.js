@@ -5,6 +5,7 @@ import { ButtonSecondary } from './Button';
 import TextArea from './TextArea';
 import TextResult from './TextResult';
 import TextNotify from './TextNotify';
+import TextMarkup from './TextMarkup';
 import config from './config';
 
 function TextCard() {
@@ -13,6 +14,7 @@ function TextCard() {
   const [text, setText] = useState('');
   const [results, setResults] = useState(null);
   const [altResults, setAltResults] = useState(null);
+  const [showResult, setShowResult] = useState(false);
 
   useEffect(() => {
     fetch(config.apiURL + '/api/v1/languages', {
@@ -39,6 +41,7 @@ function TextCard() {
       .then(response => response.json())
       .then(json => {
         setResults(json['results']);
+        setShowResult(true);
         if ('alt_results' in json) {
           setAltResults(json['alt_results']);
         }
@@ -50,8 +53,13 @@ function TextCard() {
     setLanguage(value);
   }
 
+  function handleShowTextArea() {
+    setShowResult(false);
+  }
+
   function handleTextChange(e) {
     setText(e.target.value);
+    setShowResult(false);
   }
 
   function handleUseAlt() {
@@ -74,11 +82,18 @@ function TextCard() {
         </ButtonSecondary>
       </CardHeader>
       <CardContent>
-        <TextArea
-          onChange={handleTextChange}
-          value={text}
-          placeholder="Gib den zu prüfenden Text hier ein..."
-        ></TextArea>
+        {!showResult ? (
+          <TextArea
+            onChange={handleTextChange}
+            value={text}
+            placeholder="Gib den zu prüfenden Text hier ein..."
+          ></TextArea>
+        ) : (
+          <TextMarkup
+            onClick={handleShowTextArea}
+            sentences={results.text.sentences}
+          ></TextMarkup>
+        )}
       </CardContent>
       <CardFooter>
         {altResults && <TextNotify onClick={handleUseAlt} />}

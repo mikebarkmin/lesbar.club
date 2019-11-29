@@ -1,7 +1,8 @@
 from typing import List
 import pyphen
 import nltk
-from nltk.tokenize import word_tokenize, sent_tokenize
+from nltk.data import load
+from nltk.tokenize import word_tokenize, sent_tokenize, TreebankWordTokenizer
 from langdetect import detect
 
 nltk.data.path.append("/srv/nltk_data")
@@ -79,21 +80,28 @@ class Text:
             "language": self.language,
             "detected_lang": self.detected_lang,
             "language_match": self.language_match,
+            "sentences": [s.to_dict() for s in self.sentences],
         }
 
 
 class Sentence:
-    def __init__(self, content: str, lang="en_GB"):
+    def __init__(self, content: str, start: int, end: int, lang="en_GB"):
         self.content: str = content
+        self.start: int = start
+        self.end: int = end
         self.words: List["Word"] = Word.tokenize(content, lang=lang)
 
     @classmethod
     def tokenize(cls, content: str, lang="en_GB") -> List["Sentence"]:
         language = languages[lang]
-        sentences = [
-            Sentence(sentence_content, lang)
-            for sentence_content in sent_tokenize(content, language)
-        ]
+        sentences = []
+
+        t = load("tokenizers/punkt/{0}.pickle".format(language))
+        spans = t.span_tokenize(content)
+
+        for start, end in spans:
+            sentence_content = content[start:end]
+            sentences.append(Sentence(sentence_content, start, end, lang))
         return sentences
 
     @property
@@ -103,23 +111,51 @@ class Sentence:
             syllables += word.syllables
         return syllables
 
+    def to_dict(self):
+        return {
+            "content": self.content,
+            "start": self.start,
+            "end": self.end,
+            "words": [w.to_dict() for w in self.words],
+        }
+
 
 class Word:
-    def __init__(self, content: str, lang="en_GB"):
+    def __init__(self, content: str, start: int, end: int, lang="en_GB"):
         self.content: str = content
+        self.start: int = start
+        self.end: int = end
         self.syllables: List["Syllable"] = Syllable.tokenize(content, lang)
 
     @classmethod
     def tokenize(cls, content: str, lang="en_GB") -> List["Word"]:
         language = languages[lang]
-        symbols = [",", ".", ":", "?", '"', "-", "!", "(", ")", ";"]
-        for symbol in symbols:
-            content = content.replace(symbol, " ")
-        words = [
-            Word(word_content, lang)
-            for word_content in word_tokenize(content, language=language)
-        ]
+        symbols = [",", ".", ":", "?", '"', "-", "!", "(", ")", ";", "-"]
+        words = []
+
+        t = TreebankWordTokenizer()
+        spans = t.span_tokenize(content)
+
+        for start, end in spans:
+            word_content = content[start:end]
+            if not word_content in symbols:
+                sub_words = word_content.split("-")
+                sub_word_start = start
+                sub_word_end = start
+                for s in sub_words:
+                    sub_word_end = sub_word_start + len(s)
+                    words.append(Word(s, sub_word_start, sub_word_end, lang))
+                    sub_word_start = sub_word_end
+
         return words
+
+    def to_dict(self):
+        return {
+            "content": self.content,
+            "start": self.start,
+            "end": self.end,
+            "syllables": [s.to_dict() for s in self.syllables],
+        }
 
 
 class Syllable:
@@ -135,6 +171,9 @@ class Syllable:
             for syllable_content in pythen.inserted(content).split("-")
         ]
         return syllables
+
+    def to_dict(self):
+        return {"content": self.content}
 
 
 class Letter:
