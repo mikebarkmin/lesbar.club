@@ -12,7 +12,7 @@ const Sentence = styled.div`
   background: #fff1e6;
   border-radius: 8px;
   margin-bottom: 16px;
-  border: ${props => (props.difficult ? '2px solid red' : null)};
+  border-left: 6px solid ${props => props.difficulty};
   padding: 8px;
 `;
 
@@ -30,7 +30,6 @@ const Word = styled.span`
 
 const Syllable = styled.span`
   font-size: 1.2rem;
-  font-family: serif;
   line-height: 1.7em;
 
   &:after {
@@ -42,7 +41,7 @@ const Syllable = styled.span`
   }
 `;
 
-function sentenceIsDifficult(words) {
+function sentenceDifficulty(words) {
   let difficultWords = 0;
   words.forEach(w => {
     if (wordIsDifficult(w.syllables)) {
@@ -50,7 +49,13 @@ function sentenceIsDifficult(words) {
     }
   });
 
-  return difficultWords >= 5;
+  if (difficultWords >= 5) {
+    return 'red';
+  } else if (difficultWords >= 2) {
+    return 'orange';
+  } else {
+    return 'green';
+  }
 }
 
 function wordIsDifficult(syllables) {
@@ -60,33 +65,36 @@ function wordIsDifficult(syllables) {
 function TextMarkup({ onClick, sentences }) {
   return (
     <TextMarkupContainer onClick={onClick}>
-      {sentences.map(({ words }, i) => (
-        <Sentence
-          key={i}
-          title={
-            sentenceIsDifficult(words)
-              ? 'Schwieriger Satz. 5 oder mehr schwierige Wörter.'
-              : null
-          }
-          difficult={sentenceIsDifficult(words)}
-        >
-          {words.map(({ syllables }, k) => (
-            <Word
-              key={i + ',' + k}
-              title={
-                wordIsDifficult(syllables)
-                  ? 'Schwieriges Wort. 3 oder mehr Silben.'
-                  : null
-              }
-              difficult={wordIsDifficult(syllables)}
-            >
-              {syllables.map(({ content }, p) => (
-                <Syllable key={i + ',' + k + ',' + p}>{content}</Syllable>
-              ))}
-            </Word>
-          ))}
-        </Sentence>
-      ))}
+      {sentences.map(({ words }, i) => {
+        const difficulty = sentenceDifficulty(words);
+        let title = '';
+        if (difficulty === 'red') {
+          title = 'Schwieriger Satz. 5 oder mehr schwierige Wörter.';
+        } else if (difficulty === 'orange') {
+          title = 'Mittlerer Satz. 2 oder mehr schwierige Wörter.';
+        } else {
+          title = 'Einfacher Satz.';
+        }
+        return (
+          <Sentence key={i} title={title} difficulty={difficulty}>
+            {words.map(({ syllables }, k) => (
+              <Word
+                key={i + ',' + k}
+                title={
+                  wordIsDifficult(syllables)
+                    ? 'Schwieriges Wort. 3 oder mehr Silben.'
+                    : null
+                }
+                difficult={wordIsDifficult(syllables)}
+              >
+                {syllables.map(({ content }, p) => (
+                  <Syllable key={i + ',' + k + ',' + p}>{content}</Syllable>
+                ))}
+              </Word>
+            ))}
+          </Sentence>
+        );
+      })}
     </TextMarkupContainer>
   );
 }
