@@ -129,6 +129,7 @@ class Word:
         self.end: int = end
         self.lang = lang
         self.rule = "NORMAL"
+        self.tag = ""
         self.syllables: List["Syllable"] = Syllable.tokenize(content, lang)
 
     @classmethod
@@ -159,6 +160,7 @@ class Word:
             "start": self.start,
             "end": self.end,
             "rule": self.rule,
+            "tag": self.tag,
             "syllables": [s.to_dict() for s in self.syllables],
         }
 
