@@ -60,7 +60,7 @@ function getTile(rule) {
     case 'LONG_SENTENCE':
       return 'Langer Satz. Neun oder mehr Wörter';
     case 'FILLER':
-      return 'Füllwort. Sollte vermieden werden.';
+      return 'Füllwort. Kann vielleicht vermieden werden.';
     case 'PASSIVE':
       return 'Passiv. Sollte vermieden werden.';
     default:
