@@ -1,14 +1,26 @@
 from typing import Dict
 from lesbar.text import Text
 import os
+import math
 
 script_dir = os.path.dirname(__file__)
+
+
+def gsmog(text: Text) -> Dict[str, float]:
+    # words with three syllables or more
+    ms: float = 0
+
+    for word in text.words:
+        if len(word.syllables) >= 3:
+            ms += 1
+    gsmog = math.sqrt(ms * 30 / float(text.num_sentences))
+    return {"gsmog": gsmog}
 
 
 def wiener_sachtext_formel(text: Text) -> Dict[str, float]:
     # average sentence length
     sl: float = text.num_words / float(text.num_sentences)
-    # words with three syllabels or more
+    # percentage of words with three syllabels or more
     ms: float = 0
     # percentage of words with six or more letters
     iw: float = 0

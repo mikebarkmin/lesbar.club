@@ -12,13 +12,25 @@ const Sentence = styled.div`
   background: #fff1e6;
   border-radius: 8px;
   margin-bottom: 16px;
-  border-left: 6px solid ${props => props.difficulty};
+  border-left: ${props =>
+    props.rule === 'LONG_SENTENCE' ? '6px solid red' : null};
   padding: 8px;
 `;
 
 const Word = styled.span`
-  color: ${props => (props.difficult ? '#0b9fd8' : props.theme.text.dark)};
-  font-weight: ${props => (props.difficult ? 'bold' : null)};
+  color: ${props => {
+    switch (props.rule) {
+      case 'LONG_WORD':
+        return '#0b9fd8';
+      case 'FILLER':
+        return '#FF6347';
+      case 'PASSIVE':
+        return '#FF7F50';
+      default:
+        return props.theme.text.dark;
+    }
+  }};
+  font-weight: ${props => (props.rule !== 'NORMAL' ? 'bold' : null)};
   &:after {
     content: ' ';
   }
@@ -41,60 +53,35 @@ const Syllable = styled.span`
   }
 `;
 
-function sentenceDifficulty(words) {
-  let difficultWords = 0;
-  words.forEach(w => {
-    if (wordIsDifficult(w.syllables)) {
-      difficultWords++;
-    }
-  });
-
-  if (difficultWords >= 5) {
-    return 'red';
-  } else if (difficultWords >= 2) {
-    return 'orange';
-  } else {
-    return 'green';
+function getTile(rule) {
+  switch (rule) {
+    case 'LONG_WORD':
+      return 'Langes Wort. Drei oder mehr Silben.';
+    case 'LONG_SENTENCE':
+      return 'Langer Satz. Neun oder mehr Wörter';
+    case 'FILLER':
+      return 'Füllwort. Sollte vermieden werden.';
+    case 'PASSIVE':
+      return 'Passiv. Sollte vermieden werden.';
+    default:
+      return null;
   }
-}
-
-function wordIsDifficult(syllables) {
-  return syllables.length >= 3;
 }
 
 function TextMarkup({ onClick, sentences }) {
   return (
     <TextMarkupContainer onClick={onClick}>
-      {sentences.map(({ words }, i) => {
-        const difficulty = sentenceDifficulty(words);
-        let title = '';
-        if (difficulty === 'red') {
-          title = 'Schwieriger Satz. 5 oder mehr schwierige Wörter.';
-        } else if (difficulty === 'orange') {
-          title = 'Mittlerer Satz. 2 oder mehr schwierige Wörter.';
-        } else {
-          title = 'Einfacher Satz.';
-        }
-        return (
-          <Sentence key={i} title={title} difficulty={difficulty}>
-            {words.map(({ syllables }, k) => (
-              <Word
-                key={i + ',' + k}
-                title={
-                  wordIsDifficult(syllables)
-                    ? 'Schwieriges Wort. 3 oder mehr Silben.'
-                    : null
-                }
-                difficult={wordIsDifficult(syllables)}
-              >
-                {syllables.map(({ content }, p) => (
-                  <Syllable key={i + ',' + k + ',' + p}>{content}</Syllable>
-                ))}
-              </Word>
-            ))}
-          </Sentence>
-        );
-      })}
+      {sentences.map(({ words, rule }, i) => (
+        <Sentence title={getTile(rule)} key={i} rule={rule}>
+          {words.map(({ syllables, rule }, k) => (
+            <Word title={getTile(rule)} key={i + ',' + k} rule={rule}>
+              {syllables.map(({ content }, p) => (
+                <Syllable key={i + ',' + k + ',' + p}>{content}</Syllable>
+              ))}
+            </Word>
+          ))}
+        </Sentence>
+      ))}
     </TextMarkupContainer>
   );
 }

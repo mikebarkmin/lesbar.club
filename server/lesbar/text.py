@@ -89,6 +89,7 @@ class Sentence:
         self.content: str = content
         self.start: int = start
         self.end: int = end
+        self.rule = "NORMAL"
         self.words: List["Word"] = Word.tokenize(content, lang=lang)
 
     @classmethod
@@ -116,6 +117,7 @@ class Sentence:
             "content": self.content,
             "start": self.start,
             "end": self.end,
+            "rule": self.rule,
             "words": [w.to_dict() for w in self.words],
         }
 
@@ -125,6 +127,8 @@ class Word:
         self.content: str = content
         self.start: int = start
         self.end: int = end
+        self.lang = lang
+        self.rule = "NORMAL"
         self.syllables: List["Syllable"] = Syllable.tokenize(content, lang)
 
     @classmethod
@@ -154,6 +158,7 @@ class Word:
             "content": self.content,
             "start": self.start,
             "end": self.end,
+            "rule": self.rule,
             "syllables": [s.to_dict() for s in self.syllables],
         }
 

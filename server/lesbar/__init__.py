@@ -4,15 +4,17 @@ import os
 import re
 from lesbar.text import Text
 from lesbar.formulas import (
+    gsmog,
     wiener_sachtext_formel,
     flesh_reading_ease,
     gunning_fog_index,
     dale_chall,
     lix,
 )
+from lesbar.rules import apply_rules
 
 supported_languages = {
-    "de_DE": {"formulas": [wiener_sachtext_formel, flesh_reading_ease, lix]},
+    "de_DE": {"formulas": [gsmog, wiener_sachtext_formel, flesh_reading_ease, lix]},
     "en_GB": {"formulas": [flesh_reading_ease, gunning_fog_index, dale_chall]},
 }
 
@@ -49,6 +51,7 @@ def create_app():
 
         res_text = json.get("text")
         text = Text(res_text, lang=language)
+        apply_rules(text)
         lesbar = {}
         for forumla in supported_languages[language]["formulas"]:
             lesbar = {**lesbar, **forumla(text)}
@@ -62,6 +65,7 @@ def create_app():
             if alt_language:
                 alt_language = alt_language[0]
                 alt_text = Text(res_text, lang=alt_language)
+                apply_rules(alt_text)
                 lesbar = {}
                 for forumla in supported_languages[alt_language]["formulas"]:
                     lesbar = {**lesbar, **forumla(alt_text)}
