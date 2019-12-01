@@ -199,7 +199,7 @@ function TextMarkup({ onClick, sentences }) {
         <Sentence title={getRuleTitle(rule)} key={i} rule={rule}>
           {words.map(({ syllables, rule, tag }, k) => (
             <Word title={getRuleTitle(rule)} key={i + ',' + k} rule={rule}>
-              <WordTag title={`${getTagTitle(tag)} (96% Treffsicherheit)`}>
+              <WordTag title={`${getTagTitle(tag)} (93% Treffsicherheit)`}>
                 {tag}
               </WordTag>
               {syllables.map(({ content }, p) => (
