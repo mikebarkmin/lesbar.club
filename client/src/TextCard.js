@@ -7,17 +7,19 @@ import TextResult from './TextResult';
 import TextNotify from './TextNotify';
 import TextMarkup from './TextMarkup';
 import config from './config';
+import { useLocalStorage } from './hooks';
 
 function TextCard() {
-  const [languages, setLanguages] = useState([]);
-  const [language, setLanguage] = useState();
-  const [text, setText] = useState(
+  const [languages, setLanguages] = useLocalStorage('languages', []);
+  const [language, setLanguage] = useLocalStorage('language');
+  const [text, setText] = useLocalStorage(
+    'text',
     'Ein Lesbarkeitsindex ist eine Formel oder ein Verfahren, mit dem versucht wird, die Lesbarkeit eines Textes formal durch mathematische Formeln zu berechnen. Er erfüllt die Funktion einer mathematischen Metrik. Drücke Überprüfen, um den Text zu analysieren.'
   );
-  const [results, setResults] = useState(null);
-  const [altResults, setAltResults] = useState(null);
-  const [showResult, setShowResult] = useState(false);
-  const [showLimit, setShowLimit] = useState(false);
+  const [results, setResults] = useLocalStorage('results', null);
+  const [altResults, setAltResults] = useLocalStorage('altResults', null);
+  const [showResult, setShowResult] = useLocalStorage('showResult', false);
+  const [showLimit, setShowLimit] = useLocalStorage('showLimit', false);
 
   useEffect(() => {
     fetch(config.apiURL + '/api/v1/languages', {

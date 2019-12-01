@@ -8,20 +8,23 @@ const TextMarkupContainer = styled.div`
   overflow-y: auto;
 `;
 
-const Sentence = styled.div`
+export const Sentence = styled.div`
   background: #fff1e6;
   border-radius: 8px;
   margin-bottom: 16px;
   border-left: ${props =>
     props.rule === 'LONG_SENTENCE' ? '6px solid red' : null};
   padding: 8px;
+  &:last-child {
+    margin: 0;
+  }
 `;
 
-const Word = styled.span`
+export const Word = styled.span`
   position: relative;
   padding-top: 12px;
   min-width: 35px;
-  text-aling: center;
+  text-align: center;
   color: ${props => {
     switch (props.rule) {
       case 'LONG_WORD':
@@ -68,7 +71,7 @@ const Syllable = styled.span`
   }
 `;
 
-function getRuleTitle(rule) {
+export function getRuleTitle(rule) {
   switch (rule) {
     case 'LONG_WORD':
       return 'Langes Wort. Drei oder mehr Silben.';

@@ -15,7 +15,8 @@ export const CardHeader = styled.div`
   align-items: center;
   padding: 16px;
   font-size: 20px;
-  background-color: ${props => props.theme.primary.main};
+  background-color: ${props =>
+    props.secondary ? props.theme.secondary.main : props.theme.primary.main};
   color: white;
   text-transform: uppercase;
   font-weight: bold;
