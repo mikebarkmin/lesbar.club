@@ -28,7 +28,7 @@ def passive(sentence, passive_indicators):
     vvpp = []
 
     for w in sentence.words:
-        if w.tag == "VAFIN" and w.content in passive_indicators:
+        if w.tag in ["VAFIN", "VAINF"] and w.content in passive_indicators:
             vafin.append(w)
         elif w.tag == "VVPP":
             vvpp.append(w)
