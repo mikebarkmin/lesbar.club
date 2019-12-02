@@ -4,4 +4,4 @@ from lesbar.rules.de_DE.tagger import tagger
 
 long_sentence = 9
 long_word = 3
-abbreviations = r"\b[A-Z][a-zA-Z\.]*[A-Z]\b\.?|.\.."
+abbreviations = r"\b[A-Z][a-zA-Z\.]*[A-Z]\b\.?|.+\..?"
