@@ -1,3 +1,4 @@
+import re
 from lesbar.rules import de_DE, default
 
 
@@ -41,7 +42,8 @@ def passive(sentence, passive_indicators):
 
 
 def abbreviations(word, regex):
-    pass
+    if re.match(regex, word.content):
+        word.rule = "ABBREVIATION"
 
 
 def apply_rules(text):
@@ -56,5 +58,6 @@ def apply_rules(text):
         for w in s.words:
             filler(w, rules.fillers)
             long_word(w, rules.long_word)
+            abbreviations(w, rules.abbreviations)
         passive(s, rules.passive_indicators)
     return text

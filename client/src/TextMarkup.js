@@ -33,6 +33,8 @@ export const Word = styled.span`
         return '#9932CC';
       case 'PASSIVE':
         return '#FF7F50';
+      case 'ABBREVIATION':
+        return '#DAA520';
       default:
         return props.theme.text.dark;
     }
@@ -81,6 +83,8 @@ export function getRuleTitle(rule) {
       return 'Füllwort. Kann vielleicht vermieden werden.';
     case 'PASSIVE':
       return 'Passiv. Sollte vermieden werden.';
+    case 'ABBREVIATION':
+      return 'Abkürzung. Sollten vermieden oder bei der ersten Verwendung ausgeschrieben werden.';
     default:
       return null;
   }

@@ -117,6 +117,12 @@ const database = [
                   {getRuleTitle('LONG_SENTENCE')}
                 </Sentence>
               </TCell>
+              <TCell>Abkürzung</TCell>
+              <TCell>
+                <Sentence rule="ABBREVIATION">
+                  {getRuleTitle('ABBREVIATION')}
+                </Sentence>
+              </TCell>
             </TRow>
           </TBody>
         </Table>{' '}
