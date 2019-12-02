@@ -84,16 +84,32 @@ function TextResult({ lesbar, text }) {
   return (
     <Container>
       <Text>
-        <Result label="Zeichen" value={text.num_character} />
-        <Result label="Buchstaben" value={text.num_letters} />
+        <Result
+          to={'/faq#characters'}
+          label="Zeichen"
+          value={text.num_character}
+        />
+        <Result
+          to={'/faq#letters'}
+          label="Buchstaben"
+          value={text.num_letters}
+        />
         <Result
           to={`/faq#syllables`}
           label="Silben"
           value={text.num_syllables}
         />
-        <Result label="Sätze" value={text.num_sentences} />
-        <Result label="Wörter" value={text.num_words} />
-        <Result label="Sprache" value={text.detected_lang} />
+        <Result
+          to={'/faq#sentences'}
+          label="Sätze"
+          value={text.num_sentences}
+        />
+        <Result to={'/faq#words'} label="Wörter" value={text.num_words} />
+        <Result
+          to={'/faq#language'}
+          label="Sprache"
+          value={text.detected_lang}
+        />
       </Text>
       <Spacer />
       <Lesbar>
