@@ -111,16 +111,16 @@ const database = [
               </TCell>
             </TRow>
             <TRow>
+              <TCell>Abkürzung</TCell>
+              <TCell>
+                <Word rule="ABBREVIATION">{getRuleTitle('ABBREVIATION')}</Word>
+              </TCell>
+            </TRow>
+            <TRow>
               <TCell>Langer Satz</TCell>
               <TCell>
                 <Sentence rule="LONG_SENTENCE">
                   {getRuleTitle('LONG_SENTENCE')}
-                </Sentence>
-              </TCell>
-              <TCell>Abkürzung</TCell>
-              <TCell>
-                <Sentence rule="ABBREVIATION">
-                  {getRuleTitle('ABBREVIATION')}
                 </Sentence>
               </TCell>
             </TRow>
