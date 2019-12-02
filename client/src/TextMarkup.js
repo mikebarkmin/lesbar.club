@@ -20,9 +20,11 @@ export const Sentence = styled.div`
   }
 `;
 
-export const Word = styled.span`
+export const Word = styled.div`
   position: relative;
-  padding-top: 12px;
+  display: inline-block;
+  margin-right: 6px;
+  padding-top: 4px;
   min-width: 35px;
   text-align: center;
   color: ${props => {
@@ -40,12 +42,9 @@ export const Word = styled.span`
     }
   }};
   font-weight: ${props => (props.rule !== 'NORMAL' ? 'bold' : null)};
-  &:after {
-    content: ' ';
-  }
 
-  &:last-child:after {
-    content: '';
+  &:last-child {
+    margin-right: 0;
   }
 `;
 
