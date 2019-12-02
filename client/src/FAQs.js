@@ -201,10 +201,10 @@ const database = [
         <a href="https://creativecommons.org/licenses/by-sa/4.0/">
           CC-by-sa-4.0
         </a>{' '}
-        frei verfügbar. Es wurden über 100.000 von Hand gecodetet Sätze zum
-        Trainieren verwendet. Über 100.000 weitere Sätze wurden verwendet, um
-        das Modell zu evaluieren. Ingesamt hat das Modell eine Genauigkeit von
-        93% erreicht. Das Modell kann hier heruntergeladen werden:{' '}
+        frei verfügbar. Es wurden über 190.000 von Hand gecodetet Sätze zum
+        Trainieren verwendet. Über 10.000 weitere Sätze wurden verwendet, um das
+        Modell zu evaluieren. Ingesamt hat das Modell eine Genauigkeit von 94.5%
+        erreicht. Das Modell kann hier heruntergeladen werden:{' '}
         <a href="https://github.com/mikebarkmin/lesbar.club/raw/master/server/lesbar/rules/de_DE/nltk_german_pos.pickle">
           NLTK German POS
         </a>
