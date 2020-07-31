@@ -8,8 +8,6 @@
 [![Docker Cloud container status](https://img.shields.io/docker/cloud/build/mikebarkmin/baby-tracker.svg "Docker Cloud container status")](https://hub.docker.com/r/mikebarkmin/lesbar.club)
 [![Docker Pulls](https://img.shields.io/docker/pulls/mikebarkmin/baby-tracker)](https://cloud.docker.com/repository/docker/mikebarkmin/lesbar.club)
 [![Maintainability](https://api.codeclimate.com/v1/badges/48fd2ef4a439726d9b79/maintainability)](https://codeclimate.com/github/mikebarkmin/lesbar.club/maintainability)
-![Netlify](https://img.shields.io/netlify/7069c05e-d2f6-4ef6-80aa-6f8216e42f5a)
-![Uptime Robot status](https://img.shields.io/uptimerobot/status/m783904534-615e27823ba4d28702e9336e)
 
 ## [Feature Requests and Bugs](https://github.com/mikebarkmin/lesbar.club/issues)
 
